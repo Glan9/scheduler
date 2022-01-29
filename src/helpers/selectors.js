@@ -20,19 +20,14 @@ export function getInterview(state, interview) {
 }
 
 export function getInterviewersForDay(state, day) {
-  const appointments = getAppointmentsForDay(state, day);
+  const dayObj = state.days.reduce((acc, item) => item.name === day ? item : acc, null);
+  let interviewers = [];
 
-  let interviewers = []
-
-  // Filter all interviewers to find ones where there exists an appointment on that day whose interviewer id matches
-  // Only look if there are actually appointments on that day.
-  if (appointments.length > 0){
-    interviewers = Object.values(state.interviewers).filter((interviewer) => {
-      return ( 
-        appointments.filter((appt) => appt.interview && appt.interview.interviewer === interviewer.id) 
-      ).length > 0;
-    });
+  if (dayObj) {
+    interviewers = dayObj.interviewers;
   }
 
-  return interviewers;
+  return interviewers.map((id) => {
+    return Object.values(state.interviewers).reduce((acc, item) => item.id === id ? item : acc, {});
+  });
 }

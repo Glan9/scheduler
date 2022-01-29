@@ -1,5 +1,5 @@
 import React from "react";
-import classNames from "classnames";
+import PropTypes from "prop-types";
 
 import InterviewerListItem from "./InterviewerListItem";
 
@@ -24,3 +24,7 @@ export default function InterviewerList(props) {
     </section>
   );
 }
+
+InterviewerList.propTypes = {
+  interviewers: PropTypes.array.isRequired
+};
