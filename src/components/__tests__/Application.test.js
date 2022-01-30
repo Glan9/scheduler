@@ -115,21 +115,26 @@ describe("Application", () => {
     // Render the page and create a new appointment
     const { container, debug } = render(<Application />);
 
+    // Wait until the appointments load and find them
     await waitForElement(() => getByText(container, "Archie Cohen"));
 
     const appointments = getAllByTestId(container, "appointment");
     const appointment = appointments[0];
 
+    // Click add to make a new one
     fireEvent.click(getByAltText(appointment, "Add"));
 
+    // Enter student name and interviewer
     fireEvent.change(getByPlaceholderText(appointment, /enter Student Name/i), {
       target: { value: "Lydia Miller-Jones" }
     });
     fireEvent.click(getByAltText(appointment, "Tori Malcolm"));
 
+    // Click save and verify it starts saving
     fireEvent.click(getByText(appointment, "Save"));
     expect(getByText(appointment, "Saving...")).toBeInTheDocument();
 
+    // Verify an error occurs
     await waitForElement(() => getByText(appointment, "Error"));
 
     expect(getByText(appointment, "Error saving appointment!")).toBeInTheDocument();
@@ -142,17 +147,20 @@ describe("Application", () => {
     // Render the page and create a new appointment
     const { container, debug } = render(<Application />);
 
+    // Wait until the appointments load and find them
     await waitForElement(() => getByText(container, "Archie Cohen"));
 
     const appointments = getAllByTestId(container, "appointment");
     const appointment = appointments[1];
 
+    // Click delete and confirm, and verify it starts deleting
     fireEvent.click(getByAltText(appointment, "Delete"));
 
     fireEvent.click(getByText(appointment, "Confirm"));
 
     expect(getByText(appointment, "Deleting...")).toBeInTheDocument();
 
+    // Verify an error occurs
     await waitForElement(() => getByText(appointment, "Error"));
 
     expect(getByText(appointment, "Error cancelling appointment!")).toBeInTheDocument();

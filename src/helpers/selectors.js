@@ -1,33 +1,35 @@
 export function getAppointmentsForDay(state, day) {
-  const dayObj = state.days.reduce((acc, item) => item.name === day ? item : acc, null);
-  let appointments = [];
+  // Find the day object in question
+  const dayObj = state.days.find((item) => item.name === day);
 
-  if (dayObj) {
-    appointments = dayObj.appointments;
+  // If we don't find the day, return null
+  if (dayObj === undefined) {
+    return [];
   }
 
-  return appointments.map((id) => {
-    return Object.values(state.appointments).reduce((acc, item) => item.id === id ? item : acc, {});
+  return dayObj.appointments.map((id) => {
+    return Object.values(state.appointments).find((item) => item.id === id);
   });
 }
 
 export function getInterview(state, interview) {
   if (!interview) return null;
   
-  const interviewer = Object.values(state.interviewers).reduce((acc, item) => item.id === interview.interviewer ? item : acc, null);
+  const interviewer = Object.values(state.interviewers).find((item) => item.id === interview.interviewer);
 
   return {...interview, interviewer: interviewer};
 }
 
 export function getInterviewersForDay(state, day) {
-  const dayObj = state.days.reduce((acc, item) => item.name === day ? item : acc, null);
-  let interviewers = [];
+  // Find the day object in question
+  const dayObj = state.days.find((item) => item.name === day);
 
-  if (dayObj) {
-    interviewers = dayObj.interviewers;
+  // If we don't find the day, return null
+  if (dayObj === undefined) {
+    return [];
   }
 
-  return interviewers.map((id) => {
-    return Object.values(state.interviewers).reduce((acc, item) => item.id === id ? item : acc, {});
+  return dayObj.interviewers.map((id) => {
+    return Object.values(state.interviewers).find((item) => item.id === id);
   });
 }
